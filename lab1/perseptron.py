@@ -1,6 +1,10 @@
 from utils.init import init_weights
 from utils.func import net
+from utils.read_data import read_weights
+from utils.write_data import save_weights
 
+_file_name = 'weights.xlsx'
+_sheet_name = 'weigths'
 
 class Perseptron:
     def __int__(self, length, shift, activate_fun):
@@ -12,7 +16,11 @@ class Perseptron:
         """
         self.shift = shift
         self.activate_fun = activate_fun
-        self.weights = init_weights(length)
+        weights = read_weights(length, file_name=_file_name, sheet_name=_sheet_name)
+        if len(weights) == 0:
+            weights = init_weights(length)
+            save_weights(weights, sheet_name=_sheet_name, file_name=_file_name)
+        self.weights = weights
 
     def result(self, values):
         """
