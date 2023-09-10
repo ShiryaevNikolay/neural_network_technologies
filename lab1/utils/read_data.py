@@ -18,6 +18,8 @@ def read_weights(length, file_name='../weights.xlsx', sheet_name='weights'):
             for j in range(length):
                 weight_value = sheet.cell(column=i + 1, row=j + 1).value
                 weigths[i].append(weight_value)
+        weights_file.close()
         return weigths
     except:
+        weights_file.close()
         return weigths
