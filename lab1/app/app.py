@@ -21,30 +21,66 @@ class App(Tk):
         self.columnconfigure(_size, weight=1)
         self.rowconfigure(_size, weight=1)
 
+        self.colors = [[0 for i in range(self.width)] for j in range(self.height)]
+        self.pixel_colors = []
+        self.pixels = []
+
         self.create_canvas()
+        self.create_pixels()
         self.bindKeys()
 
     def create_canvas(self):
         scale_width = self.width * self.scale
         scale_height = self.height * self.scale
         self.canvas = Canvas(self, width=scale_width, height=scale_height, bg=_background_color)
-        # self.canvas.grid(row=2, column=0, sticky=E + W + S + N)
-        self.canvas.grid(row=2, column=0)
+        self.canvas.grid(row=2, column=0, sticky=E + W + S + N)
+        # self.canvas.grid(row=2, column=0)
+
+    def create_pixels(self):
+        for i in range(self.width):
+            self.pixels.append([])
+            for j in range(self.height):
+                color = self.get_color(self.colors[i][j])
+                x = i * self.scale
+                y = j * self.scale
+                pixel = self.canvas.create_rectangle(
+                    x, y,
+                    x + self.scale, y + self.scale,
+                    fill=color
+                )
+                self.pixels[i].append(pixel)
 
     def bindKeys(self):
         self.canvas.bind(_left_mouse_key, self.draw)
         self.canvas.bind(_right_mouse_key, self.clear)
     
     def draw(self, event):
-        x1, y1 = (event.x - _brush_size), (event.y - _brush_size)
-        x2, y2 = (event.x + _brush_size), (event.y + _brush_size)
-        self.canvas.create_oval(x1, y1, x2, y2, fill=_draw_color, width=0)
+        self.paint(event, mouse_button='left')
 
     def clear(self, event):
-        x1, y1 = (event.x - _brush_size), (event.y - _brush_size)
-        x2, y2 = (event.x + _brush_size), (event.y + _brush_size)
-        self.canvas.create_oval(x1, y1, x2, y2, fill=_background_color, width=0)
+        self.paint(event, mouse_button='right')
+
+    def paint(self, event, mouse_button):
+        x = event.x // self.scale
+        y = event.y // self.scale
+        if x >= len(self.colors):
+            return
+        if y >= len(self.colors[x]):
+            return
+        if mouse_button == 'left':
+            self.colors[x][y] = 1
+            self.canvas.itemconfigure(self.pixels[x][y], fill=self.get_color(self.colors[x][y]))
+        elif mouse_button == 'right':
+            self.colors[x][y] = 0
+            self.canvas.itemconfigure(self.pixels[x][y], fill=self.get_color(self.colors[x][y]))
+
 
     def clear_canvas(self):
         self.canvas.delete('all')
         self.canvas['bg'] = _background_color
+
+    def get_color(self, value):
+        if value == 0:
+            return 'white'
+        else:
+            return 'black'
