@@ -1,4 +1,4 @@
-from utils.init import init_weights
+from utils.init_data import init_weights
 from utils.func import net
 from utils.read_data import read_weights
 from utils.write_data import save_weights
@@ -7,8 +7,9 @@ import numpy as np
 _file_name = 'weights.xlsx'
 _sheet_name = 'weigths'
 
+
 class Perseptron:
-    def __int__(self, length, shift, activate_fun):
+    def __init__(self, length, shift, activate_fun):
         """
         Инициализация персептрона
         :param length: Длина вектора входных данных
@@ -48,3 +49,9 @@ class Perseptron:
             row_length = len(self.weights[i])
             for j in range(row_length):
                 self.weights[i][j] += error * values[i][j] * self.learn_speed
+
+    def save_weights(self):
+        """
+        Сохраняет веса в файл
+        """
+        save_weights(self.weights, sheet_name=_sheet_name, file_name=_file_name)
