@@ -6,9 +6,11 @@ _draw_color = 'black'
 _left_mouse_key = '<B1-Motion>'
 _right_mouse_key = '<B3-Motion>'
 
+_result_text = "Результат: "
+
 
 class App(Tk):
-    def __init__(self, size, scale=20):
+    def __init__(self, size, get_result_callback, scale=14):
         """
         Инициализация приложения для рисования на сетке
         :param size: Размер сетки
@@ -16,6 +18,7 @@ class App(Tk):
         """
         super().__init__()
 
+        self.get_result = get_result_callback
         self.title("Распознавание")
         self.width = size
         self.height = size
@@ -30,6 +33,8 @@ class App(Tk):
 
         self.create_canvas()
         self.create_pixels()
+        self.create_controls()
+        self.create_info()
         self.bindKeys()
 
     def create_canvas(self):
@@ -39,8 +44,7 @@ class App(Tk):
         scale_width = self.width * self.scale
         scale_height = self.height * self.scale
         self.canvas = Canvas(self, width=scale_width, height=scale_height, bg=_background_color)
-        self.canvas.grid(row=2, column=0, sticky=E + W + S + N)
-        # self.canvas.grid(row=2, column=0)
+        self.canvas.grid(column=0, row=1, sticky=E + W + S + N)
 
     def create_pixels(self):
         """
@@ -103,8 +107,9 @@ class App(Tk):
         """
         Очищает канвас
         """
-        self.canvas.delete('all')
-        self.canvas['bg'] = _background_color
+        for i in range(self.width):
+            for j in range(self.height):
+                self.canvas.itemconfigure(self.pixels[i][j], fill=self.get_color(0))
 
     def get_color(self, value):
         """
@@ -116,3 +121,30 @@ class App(Tk):
             return 'white'
         else:
             return 'black'
+
+    def get_answer(self):
+        result_text = self.get_result()
+        self.result_label
+
+    def create_controls(self):
+        """
+        Создает кнопки управления
+        """
+        buttons_frame = Frame(master=self)
+        buttons_frame.grid(column=0, row=0)
+        Button(
+            master=buttons_frame,
+            text="Очистить",
+            command=self.clear_canvas
+        ).grid(column=0, row=0, padx=16, pady=8)
+        Button(
+            master=buttons_frame,
+            text="Получить ответ",
+            command=self.get_answer
+        ).grid(column=1, row=0, padx=16, pady=8)
+
+    def create_info(self):
+        """
+        Создает заголовок для отображения ответа персептрона
+        """
+        self.result_label = Label(text=_result_text).grid(column=1, row=0)
