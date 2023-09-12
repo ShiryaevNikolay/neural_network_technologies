@@ -35,7 +35,12 @@ class Perseptron:
         sum_value = net(input_data, weights) + self.shift
         return self.activate_fun(sum_value)
 
-    def train(self, values):
+    def train(self, values, target):
+        """
+        Обуает персептрон
+        :param values: Матрица входных значений
+        :param target: Эталонный результат
+        """
         result = self.result(values)
         error = target - result
         column_length = len(self.weights)
