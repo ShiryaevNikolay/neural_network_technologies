@@ -7,6 +7,8 @@ def init_weights(length):
     """
     weights = []
     for i in range(length):
-        init_weight = np.random.uniform(-0.3, 0.3)
-        weights.append(init_weight)
+        weights.append([])
+        for j in range(length):
+            init_weight = np.random.uniform(-0.3, 0.3)
+            weights[i].append(init_weight)
     return weights
