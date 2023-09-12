@@ -16,5 +16,5 @@ def save_weights(weights, sheet_name='weights', file_name='weights.xlsl'):
         row_length = len(weights[i])
         for j in range(row_length):
             sheet.cell(column=i + 1, row=j + 1).value = weights[i][j]
-    weights.save(file_name)
-    weights.close()
+    weights_file.save(file_name)
+    weights_file.close()
