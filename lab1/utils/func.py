@@ -41,13 +41,25 @@ def make_ring(matrix, padding=0, width=1):
                 matrix[x][y] = 1
 
 
-def make_cross(matrix):
-    pass
+def make_cross(matrix, padding=0):
+    """
+    Рисует крестик в матрице
+    :param matrix: Исходная нулевая матрица
+    :param padding: Отступ крестика от края
+    :return:
+    """
+    size = len(matrix)
+    for i in range(size):
+        matrix[i][i] = 1
+        matrix[i][size - i - 1] = 1
 
 
 _size = 28
-matrix = [[0 for _ in range(_size)] for _ in range(_size)]
+matrix_ring = [[0 for _ in range(_size)] for _ in range(_size)]
+matrix_cross = [[0 for _ in range(_size)] for _ in range(_size)]
 
-make_ring(matrix, padding=1, width=2)
+make_ring(matrix_ring, padding=1, width=2)
+make_cross(matrix_cross)
 
-print("\n".join("".join(map(str, i)) for i in matrix))
+print("\n".join("".join(map(str, i)) for i in matrix_ring))
+print("\n".join("".join(map(str, i)) for i in matrix_cross))
