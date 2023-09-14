@@ -23,17 +23,17 @@ def dist(x1, y1, x2, y2):
     return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
 
 
-def make_circle(matrix, center_x, center_y, radius):
+def make_ring(matrix, center_x, center_y, outer_radius, inner_radius):
     """
     Рисует круг в матрице
     :param matrix: Исходная нулевая матрица
     :param center_x: центр по оси X
     :param center_y: центр по оси Y
-    :param radius: радиус круга
+    :param outer_radius: радиус круга
     """
-    for x in range(center_x - radius, center_x + radius):
-        for y in range(center_y - radius, center_y + radius):
-            if dist(center_x, center_y, x, y) <= radius:
+    for x in range(center_x - outer_radius, center_x + outer_radius):
+        for y in range(center_y - outer_radius, center_y + outer_radius):
+            if inner_radius <= dist(center_x, center_y, x, y) <= outer_radius:
                 matrix[x][y] = 1
 
 
@@ -44,6 +44,6 @@ center_y = _size // 2
 radius = min(center_x, center_y) - 1
 matrix = [[0 for _ in range(_size)] for _ in range(_size)]
 
-make_circle(matrix, center_x, center_y, radius)
+make_ring(matrix, center_x, center_y, radius, radius - 2)
 
 print("\n".join("".join(map(str, i)) for i in matrix))
