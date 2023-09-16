@@ -54,6 +54,7 @@ def make_cross(matrix, padding=0):
         matrix[i][size - i - 1] = 1
 
 
+'''
 _size = 28
 matrix_ring = [[0 for _ in range(_size)] for _ in range(_size)]
 matrix_cross = [[0 for _ in range(_size)] for _ in range(_size)]
@@ -63,3 +64,4 @@ make_cross(matrix_cross)
 
 print("\n".join("".join(map(str, i)) for i in matrix_ring))
 print("\n".join("".join(map(str, i)) for i in matrix_cross))
+'''
