@@ -1,17 +1,28 @@
 from app.app import App
 from perseptron import Perseptron
 from utils.activate_func import treshold
-from train import train_perseptron
 
 _size = 28
 
 perseptron = Perseptron(length=_size, shift=0.5, activate_fun=treshold)
 
 
-def get_perseptron_result():
+def get_perseptron_result(values):
+    return perseptron.result(values)
+
+
+def train_perseptron():
     pass
 
 
+app = App(
+    size=_size,
+    get_result_callback=get_perseptron_result,
+    train_callback=train_perseptron
+)
+app.mainloop()
+
+'''
 while True:
     info_text = """
     Что планируется сделать?
@@ -30,5 +41,10 @@ while True:
 if action == 1:
     train_perseptron(perseptron)
 elif action == 2:
-    app = App(size=_size, get_result_callback=get_perseptron_result)
+    app = App(
+        size=_size,
+        get_result_callback=get_perseptron_result,
+        train_callback=train_perseptron
+    )
     app.mainloop()
+'''
