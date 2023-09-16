@@ -84,6 +84,20 @@ class App(Tk):
         """
         self.paint(event, mouse_button='right')
 
+    def paint_pixel(self, x, y, value):
+        """
+        Закрашивает пиксель в цвет (белый или черный) и сохраняет цвет в массиве self.colors
+        :param x: X координата пикселя
+        :param y: Y координата пикселя
+        :param value: Значение пикселы: 1 - черный, 0 - белый
+        """
+        self.colors[x][y] = value
+        color = self.get_color(value)
+        self.canvas.itemconfigure(
+            self.pixels[x][y],
+            fill=color
+        )
+
     def paint(self, event, mouse_button):
         """
         Закрашивает пиксели в определенный цвет
@@ -97,11 +111,9 @@ class App(Tk):
         if y >= len(self.colors[x]):
             return
         if mouse_button == 'left':
-            self.colors[x][y] = 1
-            self.canvas.itemconfigure(self.pixels[x][y], fill=self.get_color(self.colors[x][y]))
+            self.paint_pixel(x, y, value=1)
         elif mouse_button == 'right':
-            self.colors[x][y] = 0
-            self.canvas.itemconfigure(self.pixels[x][y], fill=self.get_color(self.colors[x][y]))
+            self.paint_pixel(x, y, value=0)
 
     def clear_canvas(self):
         """
@@ -109,8 +121,7 @@ class App(Tk):
         """
         for i in range(self.width):
             for j in range(self.height):
-                self.canvas.itemconfigure(self.pixels[i][j], fill=self.get_color(0))
-                self.colors[i][j] = 0
+                self.paint_pixel(i, j, value=0)
 
     def get_color(self, value):
         """
