@@ -31,8 +31,8 @@ class Perseptron:
         :param values: Вектор входных данных
         :return: Результат активационной функции
         """
-        weights = self.weights.flatten()
-        input_data = values.flatten()
+        weights = np.array(self.weights).flatten()
+        input_data = np.array(values).flatten()
         sum_value = net(input_data, weights) + self.shift
         return self.activate_fun(sum_value)
 
