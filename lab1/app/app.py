@@ -19,7 +19,7 @@ class App(Tk):
         super().__init__()
 
         self.get_result = get_result_callback
-        self.train = train_callback
+        self.train_perceptron = train_callback
         self.title("Распознавание")
         self.width = size
         self.height = size
@@ -123,8 +123,25 @@ class App(Tk):
             return 'black'
 
     def get_answer(self):
+        """
+        Получает овтет и отображает в приложении
+        """
         result = self.get_result(self.colors)
         self.result_label["text"] = _result_title + str(result)
+
+    def train(self):
+        """
+        Запустить обучение персептрона
+        """
+        self.train_perceptron(self.colors)
+
+    def clear_canvas_and_result(self):
+        """
+        Очищает канвас и отображение результата
+        :return:
+        """
+        self.clear_canvas()
+        self.result_label["text"] = _result_title
 
     def create_controls(self):
         """
@@ -135,7 +152,7 @@ class App(Tk):
         Button(
             master=buttons_frame,
             text="Очистить",
-            command=self.clear_canvas
+            command=self.clear_canvas_and_result
         ).grid(column=0, row=0, padx=16, pady=8)
         Button(
             master=buttons_frame,
@@ -153,4 +170,4 @@ class App(Tk):
         Создает заголовок для отображения ответа персептрона
         """
         self.result_label = Label(text=_result_title)
-        self.result_label.grid(column=1, row=0)
+        self.result_label.grid(column=1, row=0, padx=16)

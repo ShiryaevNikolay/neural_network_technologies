@@ -11,8 +11,14 @@ def get_perseptron_result(values):
     return perseptron.result(values)
 
 
-def train_perseptron():
-    pass
+def train_perseptron(values):
+    current_result = perseptron.result(values)
+    if current_result == 1:
+        target = 0
+    else:
+        target = 1
+    perseptron.train(values, target)
+    perseptron.save_weights()
 
 
 app = App(
