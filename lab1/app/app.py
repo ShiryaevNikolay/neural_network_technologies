@@ -110,6 +110,7 @@ class App(Tk):
         for i in range(self.width):
             for j in range(self.height):
                 self.canvas.itemconfigure(self.pixels[i][j], fill=self.get_color(0))
+                self.colors[i][j] = 0
 
     def get_color(self, value):
         """

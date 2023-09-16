@@ -20,8 +20,10 @@ def read_weights(length, file_name='../weights.xlsx', sheet_name='weights'):
             for j in range(length):
                 weight_value = sheet.cell(column=i + 2, row=j + 1).value
                 weights[i].append(weight_value)
+        weights_file.save(file_name)
         weights_file.close()
         return shift, weights
     except:
+        weights_file.save(file_name)
         weights_file.close()
         return shift, weights

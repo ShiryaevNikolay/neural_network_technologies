@@ -10,8 +10,11 @@ def save_weights(shift, weights, sheet_name='weights', file_name='weights.xlsl')
     :param file_name: Название файла
     """
     weights_file = load_workbook(file_name)
-    weights_file.create_sheet(sheet_name)
-    sheet = weights_file.get_sheet_by_name(sheet_name)
+    try:
+        sheet = weights_file.get_sheet_by_name(sheet_name)
+    except:
+        weights_file.create_sheet(sheet_name)
+        sheet = weights_file.get_sheet_by_name(sheet_name)
     sheet.cell(column=1, row=1).value = shift
     column_length = len(weights)
     for i in range(column_length):

@@ -1,22 +1,23 @@
 from app.app import App
-from perseptron import Perseptron
+from perceptron import Perceptron
 from utils.activate_func import treshold
 
-_size = 28
+_size = 30
 
-perseptron = Perseptron(length=_size, activate_fun=treshold)
+perseptron = Perceptron(length=_size, activate_fun=treshold)
 
 
 def get_perseptron_result(values):
+    global perseptron
+
     return perseptron.result(values)
 
 
 def train_perseptron(values):
+    global perseptron
+
     current_result = perseptron.result(values)
-    if current_result == 1:
-        target = 0
-    else:
-        target = 1
+    target = 1 if current_result == 0 else 0
     perseptron.train(values, target)
     perseptron.save_weights()
 

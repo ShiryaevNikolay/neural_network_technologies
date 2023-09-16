@@ -8,23 +8,27 @@ _file_name = 'weights.xlsx'
 _sheet_name = 'weights'
 
 
-class Perseptron:
+class Perceptron:
     def __init__(self, length, activate_fun):
         """
         Инициализация персептрона
         :param length: Длина вектора входных данных
         :param activate_fun: Активационная функция
         """
-        self.learn_speed = np.random.uniform(0.5, 0.7)  # Скорость обучения
+        self.learn_speed = 0.5  # Скорость обучения
         self.activate_fun = activate_fun
-        self.shift, self.weights = read_weights(length, file_name=_file_name, sheet_name=_sheet_name)
+        self.shift, self.weights = read_weights(
+            length,
+            file_name=_file_name,
+            sheet_name=_sheet_name,
+        )
         if len(self.weights) == 0:
             self.weights = init_weights(length)
             save_weights(
                 shift=self.shift,
                 weights=self.weights,
                 sheet_name=_sheet_name,
-                file_name=_file_name
+                file_name=_file_name,
             )
 
     def result(self, values):
@@ -35,7 +39,7 @@ class Perseptron:
         """
         weights = np.array(self.weights).flatten()
         input_data = np.array(values).flatten()
-        sum_value = net(input_data, weights) + self.shift
+        sum_value = np.dot(input_data, weights) + self.shift
         return self.activate_fun(sum_value)
 
     def train(self, values, target):
@@ -51,7 +55,8 @@ class Perseptron:
         for i in range(column_length):
             row_length = len(self.weights[i])
             for j in range(row_length):
-                self.weights[i][j] += error * values[i][j] * self.learn_speed
+                delta = error * values[i][j] * self.learn_speed
+                self.weights[i][j] += delta
 
     def save_weights(self):
         """
