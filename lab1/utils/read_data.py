@@ -14,7 +14,7 @@ def read_weights(length, file_name='../weights.xlsx', sheet_name='weights'):
     shift = 0.5
     try:
         sheet = weights_file.get_sheet_by_name(sheet_name)
-        shift = sheet.cell(column=1, row=1)
+        shift = sheet.cell(column=1, row=1).value
         for i in range(length):
             weights.append([])
             for j in range(length):
