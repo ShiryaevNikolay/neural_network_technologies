@@ -6,11 +6,11 @@ _draw_color = 'black'
 _left_mouse_key = '<B1-Motion>'
 _right_mouse_key = '<B3-Motion>'
 
-_result_text = "Результат: "
+_result_title = "Результат: "
 
 
 class App(Tk):
-    def __init__(self, size, get_result_callback, scale=14):
+    def __init__(self, size, get_result_callback, train_callback, scale=14):
         """
         Инициализация приложения для рисования на сетке
         :param size: Размер сетки
@@ -19,6 +19,7 @@ class App(Tk):
         super().__init__()
 
         self.get_result = get_result_callback
+        self.train = train_callback
         self.title("Распознавание")
         self.width = size
         self.height = size
@@ -28,7 +29,6 @@ class App(Tk):
         self.rowconfigure(size, weight=1)
 
         self.colors = [[0 for i in range(self.width)] for j in range(self.height)]
-        self.pixel_colors = []
         self.pixels = []
 
         self.create_canvas()
@@ -123,8 +123,8 @@ class App(Tk):
             return 'black'
 
     def get_answer(self):
-        result_text = self.get_result()
-        self.result_label
+        result = self.get_result(self.colors)
+        self.result_label["text"] = _result_title + str(result)
 
     def create_controls(self):
         """
@@ -142,9 +142,15 @@ class App(Tk):
             text="Получить ответ",
             command=self.get_answer
         ).grid(column=1, row=0, padx=16, pady=8)
+        Button(
+            master=buttons_frame,
+            text="Обучить",
+            command=self.train
+        ).grid(column=2, row=0, padx=16, pady=8)
 
     def create_info(self):
         """
         Создает заголовок для отображения ответа персептрона
         """
-        self.result_label = Label(text=_result_text).grid(column=1, row=0)
+        self.result_label = Label(text=_result_title)
+        self.result_label.grid(column=1, row=0)
