@@ -28,30 +28,3 @@ app = App(
     train_callback=train_perseptron
 )
 app.mainloop()
-
-'''
-while True:
-    info_text = """
-    Что планируется сделать?
-    1. Обучить персептрон
-    2. Открыть приложение, чтобы нарисовать фигуру
-    
-    Введите цифру: 
-    """
-    try:
-        action = int(input(info_text))
-    except:
-        continue
-    if action == 1 or action == 2:
-        break
-
-if action == 1:
-    train_perseptron(perseptron)
-elif action == 2:
-    app = App(
-        size=_size,
-        get_result_callback=get_perseptron_result,
-        train_callback=train_perseptron
-    )
-    app.mainloop()
-'''
