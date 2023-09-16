@@ -5,25 +5,27 @@ from utils.write_data import save_weights
 import numpy as np
 
 _file_name = 'weights.xlsx'
-_sheet_name = 'weigths'
+_sheet_name = 'weights'
 
 
 class Perseptron:
-    def __init__(self, length, shift, activate_fun):
+    def __init__(self, length, activate_fun):
         """
         Инициализация персептрона
         :param length: Длина вектора входных данных
-        :param shift: Сдвиг, смещение
         :param activate_fun: Активационная функция
         """
-        self.shift = shift
         self.learn_speed = np.random.uniform(0.5, 0.7)  # Скорость обучения
         self.activate_fun = activate_fun
-        weights = read_weights(length, file_name=_file_name, sheet_name=_sheet_name)
-        if len(weights) == 0:
-            weights = init_weights(length)
-            save_weights(weights, sheet_name=_sheet_name, file_name=_file_name)
-        self.weights = weights
+        self.shift, self.weights = read_weights(length, file_name=_file_name, sheet_name=_sheet_name)
+        if len(self.weights) == 0:
+            self.weights = init_weights(length)
+            save_weights(
+                shift=self.shift,
+                weights=self.weights,
+                sheet_name=_sheet_name,
+                file_name=_file_name
+            )
 
     def result(self, values):
         """

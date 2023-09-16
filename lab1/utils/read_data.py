@@ -7,19 +7,21 @@ def read_weights(length, file_name='../weights.xlsx', sheet_name='weights'):
     :param length: Размер данных в одной строке/столбце
     :param file_name: Имя файла
     :param sheet_name: Название страницы с весами
-    :return: Матрицу весов размером length
+    :return: Сдвиг/нулевой вес и матрицу весов размером length
     """
     weights_file = load_workbook(file_name)
-    weigths = []
+    weights = []
+    shift = 0.5
     try:
         sheet = weights_file.get_sheet_by_name(sheet_name)
+        shift = sheet.cell(column=1, row=1)
         for i in range(length):
-            weigths.append([])
+            weights.append([])
             for j in range(length):
-                weight_value = sheet.cell(column=i + 1, row=j + 1).value
-                weigths[i].append(weight_value)
+                weight_value = sheet.cell(column=i + 2, row=j + 1).value
+                weights[i].append(weight_value)
         weights_file.close()
-        return weigths
+        return shift, weights
     except:
         weights_file.close()
-        return weigths
+        return shift, weights

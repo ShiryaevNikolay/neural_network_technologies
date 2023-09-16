@@ -4,7 +4,7 @@ from utils.activate_func import treshold
 
 _size = 28
 
-perseptron = Perseptron(length=_size, shift=0.5, activate_fun=treshold)
+perseptron = Perseptron(length=_size, activate_fun=treshold)
 
 
 def get_perseptron_result(values):
