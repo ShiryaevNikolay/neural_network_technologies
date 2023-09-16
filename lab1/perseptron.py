@@ -46,6 +46,7 @@ class Perseptron:
         """
         result = self.result(values)
         error = target - result
+        self.shift += error * self.learn_speed
         column_length = len(self.weights)
         for i in range(column_length):
             row_length = len(self.weights[i])
@@ -56,4 +57,9 @@ class Perseptron:
         """
         Сохраняет веса в файл
         """
-        save_weights(self.weights, sheet_name=_sheet_name, file_name=_file_name)
+        save_weights(
+            shift=self.shift,
+            weights=self.weights,
+            sheet_name=_sheet_name,
+            file_name=_file_name
+        )
