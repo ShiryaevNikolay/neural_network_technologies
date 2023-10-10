@@ -5,16 +5,21 @@ import pandas
 import keras
 import numpy as np
 import matplotlib.pyplot as plt
+from func import to_category_dict
 
 file_name = "pakwheels_used_cars.csv"
 data_frame = pandas.read_csv(file_name)
+data_frame.dropna(subset=["price"], inplace=True)
 input_names = ["body", "make", "price"]
 output_names = ["assembly"]  # Импортирована или нет
 
+print(to_category_dict(data_frame["body"]))
+
 max_price = data_frame["price"].max()
 encoders = {"price": lambda price: [price/max_price],
-            "make": lambda make: {1: [1, 0 , 0], 2: [0, 1, 0], 3: [0, 0, 1]}.get(make),
-            "assembly": lambda assembly: {"imported": [1], "": [0]}}
+            "body": lambda body: to_category_dict(data_frame["body"]).get(body),
+            "make": lambda make: to_category_dict(data_frame["make"]).get(make),
+            "assembly": lambda assembly: {"Imported": [1], np.NaN: [0]}.get(assembly)}
 
 
 def data_frame_to_dict(df):
@@ -31,8 +36,8 @@ def make_supervised(df):
     :param df: data frame
     :return:
     """
-    raw_input_data = data_frame[input_names]
-    raw_output_data = data_frame[output_names]
+    raw_input_data = df[input_names]
+    raw_output_data = df[output_names]
     return {"inputs": data_frame_to_dict(raw_input_data),
             "outputs": data_frame_to_dict(raw_output_data)}
 
@@ -78,7 +83,7 @@ model.add(keras.layers.Dense(units=1, activation="sigmoid"))  # TODO: units=1, �
 # metrics - метрики для отслеживания
 model.compile(loss="mse", optimizer="sgd", metrics=["accuracy"])
 # load_weights вместо fit, чтобы не тренеровать заново модель, а использовать сохраненные веса
-model.load_weights("weights.h5")
+# model.load_weights("weights.h5")
 # Тренеровка
 # validation_split означает 80% данных на тренировку и 20% на валидацию
 fit_results = model.fit(x=train_x, y=train_y, epochs=10, validation_split=0.2)
