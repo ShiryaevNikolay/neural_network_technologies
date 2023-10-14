@@ -80,7 +80,7 @@ test_y = encoded_outputs[train_index:]
 
 model = keras.Sequential()
 # Dence - полносвязанная сеть
-# units - кол-во
+# units - кол-во нейронов
 model.add(keras.layers.Dense(units=64, activation="relu"))
 model.add(keras.layers.Dense(units=64, activation="relu"))
 model.add(keras.layers.Dense(units=1, activation="sigmoid"))
@@ -88,12 +88,12 @@ model.add(keras.layers.Dense(units=1, activation="sigmoid"))
 # lass - функция потерь. mse - среднеквадратичная ошибка
 # optimizer: sgd - стахостический градиентный спуск
 # metrics - метрики для отслеживания
-model.compile(loss="mse", optimizer="sgd", metrics=["accuracy"])
+model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"])
 # load_weights вместо fit, чтобы не тренеровать заново модель, а использовать сохраненные веса
 # model.load_weights("weights.h5")
 # Тренеровка
 # validation_split означает 80% данных на тренировку и 20% на валидацию
-fit_results = model.fit(x=train_x, y=train_y, batch_size=64, epochs=1000, validation_split=0.2)
+fit_results = model.fit(x=train_x, y=train_y, batch_size=64, epochs=500, validation_split=0.2)
 
 plt.title("Losses train/validation")
 plt.plot(fit_results.history["loss"], label="Train")
